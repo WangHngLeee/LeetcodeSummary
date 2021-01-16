@@ -1,5 +1,5 @@
 // Easy-243. Shortest Word Distance
-https://leetcode.com/problems/shortest-word-distance/
+// https://leetcode.com/problems/shortest-word-distance/
 
 // 找到word1和word2对应的index，然后取最小的差值。
 class Solution {
@@ -22,7 +22,7 @@ class Solution {
 
 //Medium-OOD-244. Shortest Word Distance II
 
-https://leetcode.com/problems/shortest-word-distance-ii/
+// https://leetcode.com/problems/shortest-word-distance-ii/
 
 // 用map将所有word1和word2出现的坐标存下，然后针对各自的坐标集合扫描，找出最短的distance。
 class WordDistance {
@@ -61,7 +61,7 @@ class WordDistance {
 
 
 //Medium - 245. Shortest Word Distance III
-https://leetcode.com/problems/shortest-word-distance-iii/description/
+// https://leetcode.com/problems/shortest-word-distance-iii/description/
 
 // modified from sortest word distance I
 // change two if to if and else if

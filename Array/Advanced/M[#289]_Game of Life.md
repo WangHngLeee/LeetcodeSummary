@@ -1,9 +1,10 @@
-// 289. Game of Life
+## 289. Game of Life
 https://leetcode.com/problems/game-of-life/description/
 
 
-//1. O(N) extra space
+1. O(N) extra space
 
+```java
 class Solution {
     int m,n;
     int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1},{1,-1},{-1,1},{1,1},{-1,-1}};
@@ -43,11 +44,13 @@ class Solution {
 
     }
 }
+```
 
-// 2. O(1) space
+2. O(1) space
 
-// 在原board上改变value，最后对2取余即可。
+在原board上改变value，最后对2取余即可。
 
+```java
 class Solution {
     int[][] dirs ={{1,-1},{1,0},{1,1},{0,-1},{0,1},{-1,-1},{-1,0},{-1,1}};
     public void gameOfLife(int[][] board) {
@@ -72,3 +75,4 @@ class Solution {
         }
     }
 }
+```

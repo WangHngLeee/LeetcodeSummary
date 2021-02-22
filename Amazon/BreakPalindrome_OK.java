@@ -1,4 +1,3 @@
-package AmazonNG;
 
 public class BreakPalindrome_OK {
     public String breakPalindrome(String p) {

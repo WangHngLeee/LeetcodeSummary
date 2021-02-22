@@ -1,4 +1,3 @@
-package AmazonNG;
 import java.util.*;
 
 public class CountTeams_OK {

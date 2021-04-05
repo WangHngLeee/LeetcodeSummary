@@ -1,76 +1,58 @@
 package AmazonNG;
 import java.util.*;
+
+
+//We sort the results by the sortColumn and order.
+// Then using the pageSize and the pageIndex we can figure out how many results on the previous pages and the index of the first result on the target pageIndex page.
+
+// Time: O(nlogn) , collection.sort() using merge sort inside
+// Space: O(N)
 public class FetchItemToDisplay {
-    public static List<String> fetchItemsToDisplay_PQ(int sortParameter, int sortOrder, int itemsPerPage, int pageNumber, Map<String, int[]> items) {
-        // WRITE YOUR BRILLIANT CODE HERE
-
-        /*
-            PQ solution
-         */
-        int sort = sortOrder == 0 ? 1 : -1;
-        PriorityQueue<Map.Entry<String, int[]>> pq;
-        if (sortParameter == 0) {
-            pq = new PriorityQueue<>((a, b) -> sort * (a.getKey().compareTo(b.getKey())));
-        } else if (sortParameter == 1) {
-            pq = new PriorityQueue<>((a, b) -> sort * (a.getValue()[0] - b.getValue()[0]));
-        } else {
-            pq = new PriorityQueue<>((a, b) -> sort * (a.getValue()[1] - b.getValue()[1]));
-        }
-
-        for (Map.Entry<String, int[]> entry : items.entrySet()) {
-            pq.add(entry);
-        }
+    public static List<String> fetchItemsToDisplay(int numOfItems, HashMap<String, PairInt> items, int sortOrder, int itemsPerPage, int pageNumber) {
+        // Create new arraylist to store all the names of items;
         List<String> res = new ArrayList<>();
-        while (!pq.isEmpty()) {
-            Map.Entry<String, int[]> temp = pq.poll();
-            res.add(temp.getKey());
-        }
-        int start = itemsPerPage * pageNumber;
-        int end = Math.min((start + itemsPerPage), res.size());
-        return res.subList(start, end);
-    }
+        int size = items.size();
 
+        // We need a variable to store the sort order like ascending or decending.
+        // I use 1 to mean ascending and -1 to mean descending. This variable will be used in the later lamda sort function.
+        int sort_sign = sortOrder == 0 ? 1 : -1;
 
-        /*
-              List<String> self sort solution
-        */
-
-    public static List<String> fetchItemsToDisplay_List(int sortParameter, int sortOrder, int itemsPerPage, int pageNumber, Map<String, int[]> items) {
-        int sign = sortOrder == 0 ? 1 : -1;
-        List<String> res = new ArrayList<>();
-        for(String key : items.keySet()){
+        // add all the names to the res
+        for (String key : items.keySet()) {
             res.add(key);
         }
-        if(sortParameter == 0){
-            res.sort((a, b) -> sign * (a.compareTo(b)));
-        }else if(sortParameter == 1){
-            res.sort((a, b) -> sign * (items.get(a)[0] - items.get(b)[0]));
-        }else{
-            res.sort((a, b) -> sign * (items.get(a)[1] - items.get(b)[1]));
+
+        // here we need to take different sort order upon different sortparameters.
+        // 0 : only sort the products by it's name
+        if (sortParameter == 0) {
+            Collections.sort((a, b) -> sort_sign * (a.compareTo(b)));
         }
+
+        //1: sort the products by the timestamp, which is the first in the pairint.
+        else if (sortParameter == 1) {
+            Collections.sort((a, b) -> sort_sign * (items.get(a).first - items.get(b).first));
+        }
+
+        //2: sort the products by the relavance, which is the second in the pairint
+        else {
+            Collections.sort((a, b) -> sort_sign * (items.get(a).second - items.get(b).second));
+        }
+
+        // caculate the correct range of pages.
+        // it's the index of start in the required page
         int start = itemsPerPage * pageNumber;
-        int end = Math.min((start + itemsPerPage), res.size());
-        return res.subList(start,end);
-    }
 
-    /*
-        algomaster 标准答案
-     */
+        // it's the index of end in the required page, but we need to comparet the res size and the max end index that current page
+        // can reach. We need to make sure that the last index won't exceed the range of res.
+        int end = Math.min(start + itemsPerPage, res.size());
 
-    public static List<String> fetchItemsToDisplay_Answer(int sortParameter, int sortOrder, int itemsPerPage, int pageNumber, Map<String, int[]> items) {
-
-        ArrayList<String> ordered = new ArrayList<>(items.keySet()); // create a list of item names
-        ordered.sort((a, b) -> {
-            int res;
-            if (sortParameter == 0) { // compare item name alphabetical
-                res = a.compareTo(b);
-            } else {
-                // compare by relevance or price. sortParamter - 1 because subtracting the item name spot
-                res = items.get(a)[sortParameter - 1] - items.get(b)[sortParameter - 1];
-            }
-            return res * (sortOrder == 0 ? 1 : -1); // if reverse order, then * -1
-        });
-        int startIndex = itemsPerPage * pageNumber;
-        return ordered.subList(startIndex, Math.min(startIndex + itemsPerPage, ordered.size()));
+        // then we just using sublist to get all the right products.
+        return res.subList(start, end);
     }
 }
+
+
+//对于 sde 新人有什么建议
+//如何衡量 sde 1 的成功/成果
+//最喜欢亚麻和自己 team 的哪些地方
+//对于亚麻未来发展趋势的预测等等
